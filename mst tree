@@ -1,0 +1,44 @@
+def e(edges,n):
+    cost = [-1] * (n + 1)
+    summ=0
+    i=0
+    v=n-1
+    while i<len(edges) and v>0:##this loop is used to if there is any cycle in the graph and it runs for vertex-1 times
+        if cost[edges[i][0]] == -1 and cost[edges[i][1]] == -1:
+            cost[edges[i][1]] = edges[i][0]
+            cost[edges[i][0]]-=1
+            summ += edges[i][2]
+            v-=1
+        else:
+            z=edges[i][0]
+            x=edges[i][1]
+            while cost[z] > 0:
+                z = cost[z]
+            while cost[x] > 0:
+                x=cost[x]
+            if x != z:##if x==z then there is a cycle and we simply move to the next pair of edge by i++                                                    ##
+                if abs(cost[z]) >=abs(cost[x]):
+                    cost[x] = z
+                    cost[z]-=1
+                else:
+                    cost[z] = x
+                    cost[x] -=1
+                summ += edges[i][2]
+                v-=1
+        i+=1
+    print(summ)
+
+edges = []
+n, m = map(int, input().split())
+i = 0
+while i < m:
+    a, b, c = map(int, input().split())
+    edges.append((a,b,c))
+    i += 1
+edges=sorted(edges,key=lambda x:x[2])##this sorted the tuple where edges and weigth are stored in a ascending order wrt to weights
+e(edges,n)
+
+
+
+
+
